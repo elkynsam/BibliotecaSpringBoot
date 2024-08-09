@@ -59,7 +59,7 @@ public class PrestamoController {
         }
     }
 
-    @PutMapping("/libro")
+    @PutMapping("/prestamo")
     public ResponseEntity<Map<String, String>>editarPrestamo(@RequestParam Long id, @RequestBody Prestamo prestamoNuevo){
         Map<String,String> response = new HashMap<>();
         try {
@@ -74,7 +74,7 @@ public class PrestamoController {
             response.put("message", "El Prestamo Se Edito Con Exito");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("message", "Hubo Un Error Al Editar El Prestamo");
+            response.put("message", "Hubo Un Error Al Editar Prestamo");
             return ResponseEntity.badRequest().body(response);
         }
     }
@@ -83,3 +83,4 @@ public class PrestamoController {
 
 
 }
+

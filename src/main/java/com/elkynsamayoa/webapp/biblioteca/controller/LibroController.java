@@ -21,74 +21,81 @@ import com.elkynsamayoa.webapp.biblioteca.service.LibroService;
 
 @Controller
 @RestController
-@RequestMapping(value = "libro")
+@RequestMapping(value = "")
 public class LibroController {
+
     @Autowired
     LibroService libroService;
 
     @GetMapping("/libros")
-    public List<Libro> listarLibros(){
-        return libroService.listarLibros();
+    public ResponseEntity<List<Libro>>listarLibros(){
+        try {
+            return ResponseEntity.ok(libroService.listarLibros());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
     }
 
     @GetMapping("/libro")
-    public ResponseEntity<Libro> buscarLibroPorId(@RequestParam Long id){
+    public ResponseEntity<Libro>buscarLibroPorId(@RequestParam Long id){
         try {
             return ResponseEntity.ok(libroService.buscarLibroPorId(id));
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
     }
-    
-    @PostMapping("/")
+
+    @PostMapping("/libro")
     public ResponseEntity<Map<String, String>> agregarLibro(@RequestBody Libro libro){
-        Map<String, String> response = new HashMap<>();
-        try{
+        Map<String,String> response = new HashMap<>();
+        try {
             libroService.guardarLibro(libro);
-            response.put("message", "Libro creado con exito");
+            response.put("message", "El Libro Se Agrego Con Exito");
             return ResponseEntity.ok(response);
-        }catch(Exception e){
+        } catch (Exception e) {
             response.put("message", "Error");
-            response.put("err", "Hubo un error al crear el libro");
+            response.put("err", "Hubo Un Error Al Crear El Libro");
             return ResponseEntity.badRequest().body(response);
         }
     }
 
     @PutMapping("/libro")
-    public ResponseEntity<Map<String, String>> editarLibro(@RequestParam Long id, @RequestBody Libro isbnNuevo, @RequestBody Libro nombreNuevo, @RequestBody Libro sinopsisNueva, @RequestBody Libro autorNuevo, @RequestBody Libro editorialNueva, @RequestBody Libro disponibilidadNueva, @RequestBody Libro numeroEstanteriaNueva, @RequestBody Libro clusterNuevo, @RequestBody Libro categoriaNueva) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>>editarLibro(@RequestParam Long id, @RequestBody Libro libroNuevo){
+        Map<String,String> response = new HashMap<>();
         try {
             Libro libro = libroService.buscarLibroPorId(id);
-
-            libro.setIsbn(isbnNuevo.getIsbn());
-            libro.setNombre(nombreNuevo.getNombre());
-            libro.setSinopsis(sinopsisNueva.getSinopsis());
-            libro.setAutor(autorNuevo.getAutor());
-            libro.setEditorial(editorialNueva.getEditorial());
-            libro.setDisponibilidad(disponibilidadNueva.getDisponibilidad());
-            libro.setNumeroEstanteria(numeroEstanteriaNueva.getNumeroEstanteria());
-            libro.setCluster(clusterNuevo.getCluster());
-            libro.setCategoria(categoriaNueva.getCategoria());
+            libro.setIsbn(libroNuevo.getIsbn());
+            libro.setNombre(libroNuevo.getNombre());
+            libro.setSinopsis(libroNuevo.getSinopsis());
+            libro.setAutor(libroNuevo.getAutor());
+            libro.setEditorial(libroNuevo.getEditorial());
+            libro.setDisponibilidad(libroNuevo.getDisponibilidad());
+            libro.setNumeroEstanteria(libroNuevo.getNumeroEstanteria());
+            libro.setCluster(libroNuevo.getCluster());
+            libro.setCategoria(libroNuevo.getCategoria());
             libroService.guardarLibro(libro);
-            response.put("message", "El libro se ha editado");
+            response.put("message", "El Libro Se Edito Con Exito");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response.put("message", "El libro no pudo editarse");
+            response.put("message", "Hubo Un Error Al Editar El Libro");
             return ResponseEntity.badRequest().body(response);
         }
     }
 
     @DeleteMapping("/libro")
-    public ResponseEntity<Map<String, String>> eliminarLibro(@RequestParam Long id){
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>>eliminarLibro(@RequestParam Long id){
+        Map<String,String> response = new HashMap<>();
         try {
             Libro libro = libroService.buscarLibroPorId(id);
-            libroService.eliminarLibro(libro);
-            response.put("message", "Libro eliminado con exito");
-            return ResponseEntity.ok(response);
-        } catch(Exception e) {
-            response.put("message", "Libro eliminado con exito");
+            libroService.eliminarLibro(libro); 
+            response.put("message", "El Libro Se Elimino Con Exito");
+            return ResponseEntity.ok(response); 
+        } catch (Exception e) {
+            response.put("message", "Hubo Un Error Al Eliminar El Libro");
             return ResponseEntity.badRequest().body(response);
         }
+        
+
     }
 }
