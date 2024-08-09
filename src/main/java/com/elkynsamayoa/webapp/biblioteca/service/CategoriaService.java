@@ -14,7 +14,7 @@ public class CategoriaService implements ICategoriaService{
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    @Override   
+    @Override
     public List<Categoria> listarCategorias() {
         return categoriaRepository.findAll();
     }
@@ -25,8 +25,8 @@ public class CategoriaService implements ICategoriaService{
     }
 
     @Override
-    public void guardarCategoria(Categoria categoria) {
-        categoriaRepository.save(categoria);
+    public Categoria guardarCategoria(Categoria categoria) {
+        return categoriaRepository.save(categoria);
     }
 
     @Override
